@@ -1,0 +1,10 @@
+[Unit]
+Description=Pi HQ camera service
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/pi-hq-camera/hq-camera.py
+User=pi
+
+[Install]
+WantedBy=multi-user.target
