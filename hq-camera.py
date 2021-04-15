@@ -13,7 +13,7 @@ image_dir = "/home/pi/Pictures/"
 video_dir = "/home/pi/Videos/"
 filename = None
 
-states = ['still', 'video', 'shutdown']
+states = ['shutdown', 'still', 'video']
 state = states[0]
 
 Button.was_held = False
@@ -75,15 +75,18 @@ def do_shutdown():
 
 def change_state():
     global state
-    if state is 'still':
+    if state is 'shutdown':
         state = states[1]
-        led.blink(on_time=0.25, off_time=0.25)
-    elif state is 'video':
-        state = states[2]
-        led.on()
-    elif state is 'shutdown':
-        state = states[0]
         led.blink()
+        camera.start_preview()
+    elif state is 'still':
+        state = states[2]
+        led.blink(on_time=0.25, off_time=0.25)
+        camera.start_preview()
+    elif state is 'video':
+        state = states[0]
+        led.on()
+        camera.stop_preview()
     print("state: ", state)
 
 
@@ -117,8 +120,7 @@ def pressed():
 def init_camera():
     camera.rotation = 270
     print("state: ", state)
-    led.blink()
-    camera.start_preview()
+    led.on()
 
 
 init_camera()
